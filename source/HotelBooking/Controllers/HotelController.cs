@@ -8,6 +8,9 @@ using System.Net.Http.Formatting;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using HotelBooking.Models;
+using HotelBooking.DataLayer;
+using System.Web.Script.Serialization;
+using System.Web.Helpers;
 
 namespace HotelBooking.Controllers
 {
@@ -61,22 +64,16 @@ namespace HotelBooking.Controllers
             }
             return View("index");
         }
+        [HttpPost]
+        public ActionResult GetCountry()
+        {
+            List<BindCountryResponse> objGetCountry = new List<BindCountryResponse>();
+            ContryList_Db objCountryDal = new ContryList_Db();
+            objGetCountry = objCountryDal.GetCountryList();
+            var result = objGetCountry.ToList();
+            var json = new JavaScriptSerializer();
+            return Json(result, JsonRequestBehavior.AllowGet);
 
-        //public IEnumerable<BindCountryRequest> BindCountry( string tokenId)
-        //{
-        //    HotelInfoController();
-        //    BindCountryRequest contryReq = new BindCountryRequest();
-        //    List<BindCountryResponse> contryResp = new List<BindCountryResponse>();
-        //    contryReq.TokenId = tokenId;
-        //    string url = "api/UpdatedHotel/Authenticate";
-        //    HttpResponseMessage responseMessage = client.PostAsJsonAsync(url, contryReq).Result;
-        //    if (responseMessage.IsSuccessStatusCode)
-        //    {
-        //        var jsonString = responseMessage.Content.ReadAsStringAsync();
-        //        jsonString.Wait();
-        //        contryResp = JsonConvert.DeserializeObject<List<UserAuthenticateResponse>>(jsonString.Result);
-        //    }
-        //    return contryResp;
-        //}
+        }
     }
 }
