@@ -80,6 +80,21 @@ namespace HotelBooking.Models
         public Error Error { get; set; }
 
     }
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
+    public class BindCityResponse : UserAuthenticateModel
+    {
+        [JsonProperty(PropertyName = "Country")]
+        public string Destination { get; set; }
+        [JsonProperty(PropertyName = "City")]
+        public int Cityid { get; set; }
+
+        //[JsonProperty(PropertyName = "Status")]
+        //public int Status { get; set; }
+
+        //[JsonProperty(PropertyName = "Error")]
+        //public Error Error { get; set; }
+
+    }
 
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class Error

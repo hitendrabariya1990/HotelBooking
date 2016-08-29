@@ -21,7 +21,18 @@ namespace HotelBooking.DataLayer
         {
             try
             {
-                return this._db.Query<BindCountryResponse>("select [Country],[Countrycode] From HotelCityCode Group By [Country],[Countrycode] ").ToList();
+                return this._db.Query<BindCountryResponse>("select [Country],[Countrycode] From HotelCityCode Group By [Country],[Countrycode] order by [Country] asc").ToList();
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
+        }
+        public List<BindCityResponse> GetAllCity(string countryName)
+        {
+            try
+            {
+                return this._db.Query<BindCityResponse>("Select [Cityid],[Destination] From HotelCityCode  where [Countrycode]='" + countryName+ "' order by [Destination] asc").ToList();
             }
             catch(Exception e)
             {
