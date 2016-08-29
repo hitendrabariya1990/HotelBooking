@@ -75,5 +75,15 @@ namespace HotelBooking.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
+        [HttpPost]
+        public ActionResult GetAllCity(string CountryName)
+        {
+            List<BindCityResponse> objGetCity = new List<BindCityResponse>();
+            ContryList_Db objCountryDal = new ContryList_Db();
+            objGetCity = objCountryDal.GetAllCity(CountryName);
+            var result = objGetCity.ToList();
+            var json = new JavaScriptSerializer();
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
     }
 }

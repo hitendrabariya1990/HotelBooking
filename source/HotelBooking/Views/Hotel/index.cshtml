@@ -4,11 +4,55 @@
     Layout = "~/Views/Shared/Hotel_Layout.cshtml";
 }
 
-@*@Html.TextBoxFor(m => m.TokenId, new { @class = "form-control" })
-@Html.TextBoxFor(m => m.Status, new { @class = "form-control" })*@
+@Html.TextBoxFor(m => m.TokenId, new { @class = "form-control" })
+@Html.TextBoxFor(m => m.Status, new { @class = "form-control" })
 <script type="text/html" id="ddlcountry_temp">
     <option value="${Countrycode}">${Country}</option>
     </script>
+<script type="text/javascript">
+    var clicks = 0;
+    var a = 1;
+    var b;
+    function onClick() {
+        debugger;
+        clicks += 1;
+        counter = 3;
+        document.getElementById("clicks").innerHTML = clicks;
+        $("#Adult").html(cal_room(clicks));
+
+    };
+    function onClick_Minus(){
+        clicks -= 1;
+        if (clicks < 0) {
+            clicks = 0;
+        }
+        document.getElementById("clicks").innerHTML = clicks;
+    }
+    function cal_room(obj) {
+    //debugger;
+    var hold = (parseInt(obj) / 3);
+    if (isInt(hold)) {
+        return hold;
+    }
+    else if (isFloat(hold)) {
+        return (parseInt(hold) + 1);
+    }
+    else {
+        return "sorry";
+    }
+}
+function isInt(n) {
+    return Number(n) === n && n % 1 === 0;
+}
+
+function isFloat(n) {
+    return Number(n) === n && n % 1 !== 0;
+}
+</script>
+</script>
+<script type="text/html" id="ddlcity_temp">
+    <option value="${Cityid}" data-tokens="${Destination}">${Destination}</option>
+</script>
 <div class="search-box-wrapper">
     <div class="search-box container">
         <ul class="search-tabs clearfix">
@@ -28,17 +72,18 @@
                             <h4 class="title">Select </h4>
                             <label>Country</label>
                             <div class="selector">
-                                <select id="ddlCountry">
-                                  
+                                <select id="ddlCountry" onchange="GetCity()">
                                 </select>
                             </div>
                             </div>
                         <div class="form-group col-sm-6 col-md-3">
                             <h4 class="title">Where</h4>
                             <label>Your Destination</label>
-                            <input type="text" class="input-text full-width" placeholder="enter a destination or hotel name" />
+                            @*<input type="text" class="" placeholder="enter a destination or hotel name" />*@
+                            <div class="selector">
+                                <select id="ddlcity" class="selectpicker" data-live-search="true"></select>
+                            </div>
                         </div>
-
                         <div class="form-group col-sm-6 col-md-4">
                             <h4 class="title">When</h4>
                             <div class="row">
@@ -61,39 +106,44 @@
                             <h4 class="title">Who</h4>
                             <div class="row">
                                 <div class="col-xs-4">
-                                    <label>Rooms</label>
-                                    <div class="selector">
-                                        <select class="full-width">
-                                            <option value="1">01</option>
-                                            <option value="2">02</option>
-                                            <option value="3">03</option>
-                                            <option value="4">04</option>
-                                        </select>
+                                    <button type="button" onClick="onClick()">+</button>
+                                    <button type="button" onClick="onClick_Minus()">-</button>
+                                    <label>Person</label> <a id="clicks">0</a>
+                                    </div>
+                                    @*<div class="col-xs-4">
+                <label>Rooms</label>
+                <div class="selector">
+                    <select class="full-width">
+                        <option value="1">01</option>
+                        <option value="2">02</option>
+                        <option value="3">03</option>
+                        <option value="4">04</option>
+                    </select>
+                </div>
+            </div>*@
+                                    <div class="col-xs-4">
+                                        <label>Adults</label>
+                                        <div class="selector">
+                                            <label class="full-width" id="Adult">
+                                                @*<option value="1">01</option>
+                                                <option value="2">02</option>
+                                                <option value="3">03</option>
+                                                <option value="4">04</option>*@
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <label>Kids</label>
+                                        <div class="selector">
+                                            <select class="full-width">
+                                                <option value="1">01</option>
+                                                <option value="2">02</option>
+                                                <option value="3">03</option>
+                                                <option value="4">04</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-xs-4">
-                                    <label>Adults</label>
-                                    <div class="selector">
-                                        <select class="full-width">
-                                            <option value="1">01</option>
-                                            <option value="2">02</option>
-                                            <option value="3">03</option>
-                                            <option value="4">04</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-xs-4">
-                                    <label>Kids</label>
-                                    <div class="selector">
-                                        <select class="full-width">
-                                            <option value="1">01</option>
-                                            <option value="2">02</option>
-                                            <option value="3">03</option>
-                                            <option value="4">04</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
                         <div class="form-group col-sm-6 col-md-2 fixheight">
@@ -437,5 +487,29 @@
     function onsuccesscountry(data) {
         $("#ddlCountry").empty();
         $("#ddlCountry").append($("#ddlcountry_temp").tmpl(data));
+    }
+    function GetCity() {
+        var country = $('#ddlCountry :selected').val();
+        $.ajax({
+            url: '@Url.Action("GetAllCity", "Hotel")',
+            type: 'POST',
+            dataType: 'Json',
+            data: JSON.stringify(
+            {
+           CountryName: country
+            }
+        ),
+            cache: false,
+            success: onsuccessCity,
+            contentType: "application/Json; charset=utf-8",
+            error: function (xhr, error) {
+                console.debug(xhr); console.debug(error);
+            },
+
+        });
+    }
+    function onsuccessCity(data) {
+        $("#ddlcity").empty();
+        $("#ddlcity").append($("#ddlcity_temp").tmpl(data));
     }
 </script>
