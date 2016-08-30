@@ -276,6 +276,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\Hotel_Layout.cshtml" />
     <Content Include="Views\Hotel\index.cshtml" />
+    <Content Include="Views\Hotel\ListView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

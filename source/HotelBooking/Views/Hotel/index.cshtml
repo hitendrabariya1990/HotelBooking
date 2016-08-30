@@ -49,7 +49,7 @@ function isFloat(n) {
     return Number(n) === n && n % 1 !== 0;
 }
 </script>
-</script>
+
 <script type="text/html" id="ddlcity_temp">
     <option value="${Cityid}" data-tokens="${Destination}">${Destination}</option>
 </script>
@@ -66,7 +66,7 @@ function isFloat(n) {
 
         <div class="search-tab-content">
             <div class="tab-pane fade active in" id="hotels-tab">
-                <form action="hotel-list-view.html" method="post">
+                <form >
                     <div class="row">
                         <div class="form-group col-sm-2 col-md-3">
                             <h4 class="title">Select </h4>
@@ -90,13 +90,13 @@ function isFloat(n) {
                                 <div class="col-xs-6">
                                     <label>Check In</label>
                                     <div class="datepicker-wrap">
-                                        <input type="text" class="input-text full-width" placeholder="mm/dd/yy" />
+                                        <input type="text" class="input-text full-width" id="CheckInDate" placeholder="mm/dd/yy" />
                                     </div>
                                 </div>
                                 <div class="col-xs-6">
                                     <label>Check Out</label>
                                     <div class="datepicker-wrap">
-                                        <input type="text" class="input-text full-width" placeholder="mm/dd/yy" />
+                                        <input type="text" class="input-text full-width"  id="CheckOutDate" placeholder="mm/dd/yy" />
                                     </div>
                                 </div>
                             </div>
@@ -106,9 +106,11 @@ function isFloat(n) {
                             <h4 class="title">Who</h4>
                             <div class="row">
                                 <div class="col-xs-4">
-                                    <button type="button" onClick="onClick()">+</button>
-                                    <button type="button" onClick="onClick_Minus()">-</button>
-                                    <label>Person</label> <a id="clicks">0</a>
+                                    <span>
+                                        <a id="clicks">0</a> Guests
+                                        <button type="button" onClick="onClick()">+</button>
+                                        <button type="button" onClick="onClick_Minus()">-</button>
+                                    </span>
                                     </div>
                                     @*<div class="col-xs-4">
                 <label>Rooms</label>
@@ -122,7 +124,7 @@ function isFloat(n) {
                 </div>
             </div>*@
                                     <div class="col-xs-4">
-                                        <label>Adults</label>
+                                        <label>Rooms</label>
                                         <div class="selector">
                                             <label class="full-width" id="Adult">
                                                 @*<option value="1">01</option>
@@ -148,7 +150,7 @@ function isFloat(n) {
 
                         <div class="form-group col-sm-6 col-md-2 fixheight">
                             <label class="hidden-xs">&nbsp;</label>
-                            <button type="submit" class="full-width icon-check animated" data-animation-type="bounce" data-animation-duration="1">SEARCH NOW</button>
+                            <button type="submit" class="full-width icon-check animated" data-animation-type="bounce" data-animation-duration="1" onclick="GetHotelSearchResult()">SEARCH NOW</button>
                         </div>
                     </div>
                 </form>
@@ -481,7 +483,7 @@ function isFloat(n) {
             error: function (xhr, error) {
                 console.debug(xhr); console.debug(error);
             },
-            
+
         });
     }
     function onsuccesscountry(data) {
@@ -511,5 +513,54 @@ function isFloat(n) {
     function onsuccessCity(data) {
         $("#ddlcity").empty();
         $("#ddlcity").append($("#ddlcity_temp").tmpl(data));
+    }
+
+    function GetHotelSearchResult() {
+        debugger;
+        var textVALUE ="";
+        for (i = 0; i < parseInt($('#Adult').text()) ; i++) {
+            textVALUE = textVALUE+"{NoOfAdults: 1,NoOfChild: 1,ChildAge: [5]},";
+        }
+
+        var dataReq = {
+            BookingMode: 1,
+            CheckInDate: $('#CheckInDate').val(),
+            NoOfNights:3,
+            CountryCode: $('#ddlCountry :selected').val(),
+            CityId: $('#ddlcity :selected').val(),
+            PreferredCurrency: "USD",
+            GuestNationality: "American",
+            NoOfRooms: $('#Adult').val(),
+            MaxRating: 5,
+            MinRating: 1,
+            EndUserIp: "192.168.0.100",
+            TokenId: "ae8d15b7-d06e-4c50-8eca-904e6cc42d1f",
+            RoomGuests: [textVALUE],
+            OrderBy: 13,
+            SortBy: 14,
+            ResultCount: 15,
+            MemberMobileNo: "7405007979",
+            MemberMobilePin: "1021"
+        };
+        $.ajax({
+            url: '@Url.Action("ListView", "Hotel")',
+            type: 'POST',
+            dataType: 'Json',
+            data: JSON.stringify(
+            {
+                hotelsearchReq:dataReq
+            }
+        ),
+            cache: false,
+            success: onsuccessHotelSearchResult,
+            contentType: "application/Json; charset=utf-8",
+            error: function (xhr, error) {
+                console.debug(xhr); console.debug(error);
+            },
+
+        });
+    }
+    function onsuccessHotelSearchResult(data) {
+        alert(data);
     }
 </script>
