@@ -4,8 +4,8 @@
     Layout = "~/Views/Shared/Hotel_Layout.cshtml";
 }
 
-@Html.TextBoxFor(m => m.TokenId, new { @class = "form-control" })
-@Html.TextBoxFor(m => m.Status, new { @class = "form-control" })
+@*@Html.TextBoxFor(m => m.TokenId, new { @class = "form-control" })
+@Html.TextBoxFor(m => m.Status, new { @class = "form-control" })*@
 <script type="text/html" id="ddlcountry_temp">
     <option value="${Countrycode}">${Country}</option>
     </script>
@@ -49,7 +49,7 @@ function isFloat(n) {
     return Number(n) === n && n % 1 !== 0;
 }
 </script>
-</script>
+
 <script type="text/html" id="ddlcity_temp">
     <option value="${Cityid}" data-tokens="${Destination}">${Destination}</option>
 </script>
@@ -103,12 +103,11 @@ function isFloat(n) {
                         </div>
 
                         <div class="form-group col-sm-6 col-md-3">
-                            <h4 class="title">Who</h4>
+                            <h4 class="title">Person(<a id="clicks">0</a>)</h4>
                             <div class="row">
                                 <div class="col-xs-4">
                                     <button type="button" onClick="onClick()">+</button>
                                     <button type="button" onClick="onClick_Minus()">-</button>
-                                    <label>Person</label> <a id="clicks">0</a>
                                     </div>
                                     @*<div class="col-xs-4">
                 <label>Rooms</label>
@@ -122,31 +121,18 @@ function isFloat(n) {
                 </div>
             </div>*@
                                     <div class="col-xs-4">
-                                        <label>Adults</label>
+                                        <h3 style="margin-top:-37%">Rooms</h3>
                                         <div class="selector">
-                                            <label class="full-width" id="Adult">
-                                                @*<option value="1">01</option>
-                                                <option value="2">02</option>
-                                                <option value="3">03</option>
-                                                <option value="4">04</option>*@
+                                            <label class="full-width" id="Adult" style="padding-top:11px;font-weight:bold">
+                                               
                                             </label>
                                         </div>
                                     </div>
-                                    <div class="col-xs-4">
-                                        <label>Kids</label>
-                                        <div class="selector">
-                                            <select class="full-width">
-                                                <option value="1">01</option>
-                                                <option value="2">02</option>
-                                                <option value="3">03</option>
-                                                <option value="4">04</option>
-                                            </select>
-                                        </div>
-                                    </div>
+                                    
                                 </div>
                         </div>
 
-                        <div class="form-group col-sm-6 col-md-2 fixheight">
+                        <div class="form-group col-sm-6 col-md-2 fixheight" style="padding-top:18px!important">
                             <label class="hidden-xs">&nbsp;</label>
                             <button type="submit" class="full-width icon-check animated" data-animation-type="bounce" data-animation-duration="1">SEARCH NOW</button>
                         </div>
