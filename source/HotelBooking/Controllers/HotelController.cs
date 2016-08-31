@@ -90,18 +90,21 @@ namespace HotelBooking.Controllers
         public ActionResult HotelSearchListView(HotelSearchRequest hotelsearchReq)
         {
             HotelInfoController();
+            HotelSearchResponse hotelsearchResp = new HotelSearchResponse();
+
             string url = "api/UpdatedHotel/GetHotelResult";
             HttpResponseMessage responseMessage = client.PostAsJsonAsync(url, hotelsearchReq).Result;
             if (responseMessage.IsSuccessStatusCode)
             {
-                HotelSearchResponse hotelsearchResp = new HotelSearchResponse();
+                
                 var jsonString = responseMessage.Content.ReadAsStringAsync();
                 jsonString.Wait();
 
                 hotelsearchResp = JsonConvert.DeserializeObject<HotelSearchResponse>(jsonString.Result);
-                return View("ListView", hotelsearchResp);
+                
             }
-            return View("ListView");
+            return Json(hotelsearchResp,JsonRequestBehavior.AllowGet);
+            // return View("ListView");
         }
     }
 }
