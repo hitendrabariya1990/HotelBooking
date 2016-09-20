@@ -103,7 +103,7 @@ namespace HotelBooking.Controllers
             http.Headers.Add("x-username", "BIS199");
             http.Headers.Add("x-password", "123456");
 
-            string parsedContent = new JavaScriptSerializer().Serialize(hotelsearchReq); ;
+            string parsedContent = new JavaScriptSerializer().Serialize(hotelsearchReq);
             ASCIIEncoding encoding = new ASCIIEncoding();
             Byte[] bytes = encoding.GetBytes(parsedContent);
 
@@ -136,10 +136,10 @@ namespace HotelBooking.Controllers
             return Json(hotelsearchResp, JsonRequestBehavior.AllowGet);
             // return View("ListView");
         }
-        [HttpGet]
-        public ActionResult HotelSearchListView()
+        [HttpPost]
+        public ActionResult HotelSearchListView(HotelSearchRequest ht)
         {
-            return View();
+            return View(HotelSearchListView_Lidt(ht));
         }
     }
    

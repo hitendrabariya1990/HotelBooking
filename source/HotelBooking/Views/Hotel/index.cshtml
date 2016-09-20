@@ -507,7 +507,7 @@ function isFloat(n) {
         //}
         var dataReq = {
             "BookingMode": 5,
-            "CheckInDate": "20/09/2016",
+            "CheckInDate": "30/09/2016",
             "NoOfNights": 3,
             "CountryCode": "US",
             "CityId": "1012",
@@ -532,8 +532,27 @@ function isFloat(n) {
         }
        
         localStorage.setItem("Htreq", dataReq);
-        //@Html.ActionLink("Search", "HotelSearchListView", "Hotel")
-        $.get('http://localhost:51724/Hotel/HotelSearchListView');
+        $.ajax({
+            url: '@Url.Action("HotelSearchListView", "Hotel")',
+            type: 'POST',
+            dataType: 'Json',
+            data: JSON.stringify(
+                 dataReq
+                ),
+
+            cache: false,
+            success: onsuccessHotelSearchResult,
+            //contentType: "application/Json; charset=utf-8",
+            headers: {
+                'Content-Type': 'application/json', 'x-username': 'BIS199', 'x-password': '123456'
+            },
+            error: function (xhr, error) {
+                console.debug(xhr); console.debug(error);
+            },
+
+        });
+       @*@Html.ActionLink("Search", "HotelSearchListView", "Hotel")*@
+       // $.get('http://localhost:51724/Hotel/HotelSearchListView');
         //window.location.assign("http://localhost:51724/Hotel/HotelSearchListView");
     }
         //var dataReq = {
@@ -556,28 +575,10 @@ function isFloat(n) {
         //    MemberMobileNo: "7405007979",
         //    MemberMobilePin: "1021"
         //};
-        @*$.ajax({
-            url: '@Url.Action("HotelSearchListView", "Hotel")',
-            type: 'POST',
-            dataType: 'Json',
-            data: JSON.stringify(
-                 dataReq 
-                ),
-                
-            cache: false,
-            success: onsuccessHotelSearchResult,
-            //contentType: "application/Json; charset=utf-8",
-                   headers: {
-                       'Content-Type': 'application/json', 'x-username': 'BIS199', 'x-password': '123456'
-                   },
-            error: function (xhr, error) {
-                console.debug(xhr); console.debug(error);
-            },
-
-        });
-    }
+        
+    
     function onsuccessHotelSearchResult(data) {
         alert(data);
-    }*@
+    }
     
 </script>
