@@ -11,6 +11,9 @@ using HotelBooking.Models;
 using HotelBooking.DataLayer;
 using System.Web.Script.Serialization;
 using System.Web.Helpers;
+using System.Text;
+using System.IO;
+using System.Net;
 
 namespace HotelBooking.Controllers
 {
@@ -30,6 +33,7 @@ namespace HotelBooking.Controllers
         }
         public ActionResult Index()
         {
+            
             return View();
         }
 
@@ -87,24 +91,56 @@ namespace HotelBooking.Controllers
         }
 
         [HttpPost]
-        public ActionResult HotelSearchListView(HotelSearchRequest hotelsearchReq)
+        public ActionResult HotelSearchListView_Lidt(HotelSearchRequest hotelsearchReq)
         {
             HotelInfoController();
+            var baseAddress = "http://api.jbspl.com/Staging/api/UpdatedHotel/GetHotelResult";
+
+            var http = (HttpWebRequest)WebRequest.Create(new Uri(baseAddress));
+            http.Accept = "application/json";
+            http.ContentType = "application/json";
+            http.Method = "POST";
+            http.Headers.Add("x-username", "BIS199");
+            http.Headers.Add("x-password", "123456");
+
+            string parsedContent = new JavaScriptSerializer().Serialize(hotelsearchReq); ;
+            ASCIIEncoding encoding = new ASCIIEncoding();
+            Byte[] bytes = encoding.GetBytes(parsedContent);
+
+            Stream newStream = http.GetRequestStream();
+            newStream.Write(bytes, 0, bytes.Length);
+            newStream.Close();
+
+            var response = http.GetResponse();
+
+            var stream = response.GetResponseStream();
+            var sr = new StreamReader(stream);
+            var content = sr.ReadToEnd();
+            //HotelSearchResponse hotelsearchResp = new HotelSearchResponse();
+
+            ////string url = "api/UpdatedHotel/GetHotelResult";
+            //string json = new JavaScriptSerializer().Serialize(hotelsearchReq);
+
+            //HttpResponseMessage responseMessage = client.PostAsJsonAsync("http://api.jbspl.com/Staging/api/UpdatedHotel/GetHotelResult",json.ToString().Replace("{","{&").Replace(",",",&")).Result;
+            //if (responseMessage.IsSuccessStatusCode)
+            //{
+
+            //    var jsonString = responseMessage.Content.ReadAsStringAsync();
+            //    jsonString.Wait();
+
+            //    hotelsearchResp = JsonConvert.DeserializeObject<HotelSearchResponse>(jsonString.Result);
+
+            //}
             HotelSearchResponse hotelsearchResp = new HotelSearchResponse();
-
-            string url = "api/UpdatedHotel/GetHotelResult";
-            HttpResponseMessage responseMessage = client.PostAsJsonAsync(url, hotelsearchReq).Result;
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                
-                var jsonString = responseMessage.Content.ReadAsStringAsync();
-                jsonString.Wait();
-
-                hotelsearchResp = JsonConvert.DeserializeObject<HotelSearchResponse>(jsonString.Result);
-                
-            }
-            return Json(hotelsearchResp,JsonRequestBehavior.AllowGet);
+            hotelsearchResp = JsonConvert.DeserializeObject<HotelSearchResponse>(content);
+            return Json(hotelsearchResp, JsonRequestBehavior.AllowGet);
             // return View("ListView");
         }
+        [HttpGet]
+        public ActionResult HotelSearchListView()
+        {
+            return View();
+        }
     }
+   
 }

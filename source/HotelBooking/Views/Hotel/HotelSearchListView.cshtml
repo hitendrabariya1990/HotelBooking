@@ -6,7 +6,7 @@
 
 <section id="content" ng-app="myHotelSearchResult">
     <div class="container">
-        <div id="main" ng-controller="HotelSearchController">
+        <div id="main">
             <div class="row">
                 <div class="col-sm-4 col-md-3">
                     <button ng-click="GetAllData()">Get Data</button>
@@ -155,7 +155,10 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="hotel-list listing-style3 hotel" ng-model="SearchResult">
+                    <div id="searchHotel">
+
+                    </div>
+                    @*<div class="hotel-list listing-style3 hotel" ng-model="SearchResult">
                         <article class="box">
                             <figure class="col-sm-5 col-md-4">
                                 <a title="" href="ajax/slideshow-popup.html" class="hover-effect popup-gallery"><img width="270" height="160" alt="" src="{{SearchResult.HotelResult.HotelPicture}}"></a>
@@ -188,10 +191,135 @@
                             </div>
                         </article>
 
-                    </div>
+                    </div>*@
                     <a href="#" class="uppercase full-width button btn-large">load more listing</a>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<script type="text/html" id="searchresult">
+    <div class="hotel-list listing-style3 hotel">
+        <article class="box">
+            <figure class="col-sm-5 col-md-4">
+                <a title="" href="ajax/slideshow-popup.html" class="hover-effect popup-gallery"><img width="270" height="160" alt="" src="${{HotelPicture}}"></a>
+            </figure>
+            <div class="details col-sm-7 col-md-8">
+                <div>
+                    <div>
+                        <h4 class="box-title">${HotelName}<small><i class="soap-icon-departure yellow-color"></i>${HotelAddress}</small></h4>
+                        <div class="amenities">
+                            <i class="soap-icon-wifi circle"></i>
+                            <i class="soap-icon-fitnessfacility circle"></i>
+                            <i class="soap-icon-fork circle"></i>
+                            <i class="soap-icon-television circle"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="five-stars-container">
+                            <span class="five-stars" style="width: ${{StarRating}}%;"></span>
+                        </div>
+                        <span class="review">270 reviews</span>
+                    </div>
+                </div>
+                <div>
+                    <p>${HotelDescription}</p>
+                    <div>
+                        <span class="price"><small>AVG/NIGHT</small>${RoomPrice} {{SearchResult.Price.USD}}</span>
+                        <a class="button btn-small full-width text-center" title="" href="hotel-detailed.html">SELECT</a>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+    </div>
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        GetHotelSearchResult();
+    });
+    
+</script>
+<script type="text/javascript">
+    
+
+
+    function GetHotelSearchResult() {
+        debugger;
+        var textVALUE = "";
+        for (i = 0; i < parseInt($('#Adult').text()) ; i++) {
+            textVALUE = textVALUE + "{NoOfAdults: 1,NoOfChild: 1,ChildAge: [5]}";
+        }
+        var dataReq = localStorage.getItem("Htreq");
+        //var dataReq = {
+        //    "BookingMode": 5,
+        //    "CheckInDate": "20/09/2016",
+        //    "NoOfNights": 3,
+        //    "CountryCode": "US",
+        //    "CityId": "1012",
+        //    "PreferredCurrency": "INR",
+        //    "GuestNationality": "American",
+        //    "NoOfRooms": 1,
+        //    "MaxRating": 5,
+        //    "MinRating": 2,
+        //    "EndUserIp": "192.168.0.100",
+        //    "TokenId": "ae8d15b7-d06e-4c50-8eca-904e6cc42d1f",
+        //    "RoomGuests": [
+        //      {
+        //          "NoOfAdults": 1,
+        //          "NoOfChild": 1,
+        //          "ChildAge": [5]
+        //      }],
+        //    "OrderBy": 13,
+        //    "SortBy": 14,
+        //    "ResultCount": 15,
+        //    "MemberMobileNo": "7405007979",
+        //    "MemberMobilePin": "1021"
+        //}
+
+        //var dataReq = {
+        //    BookingMode: 1,
+        //    CheckInDate: $('#CheckInDate').val(),
+        //    NoOfNights: 3,
+        //    CountryCode: $('#ddlCountry :selected').val(),
+        //    CityId: $('#ddlcity :selected').val(),
+        //    PreferredCurrency: "USD",
+        //    GuestNationality: "American",
+        //    NoOfRooms: $('#Adult').text(),
+        //    MaxRating: 5,
+        //    RoomGuests: [textVALUE],
+        //    MinRating: 1,
+        //    OrderBy: 13,
+        //    SortBy: 14,
+        //    ResultCount: 15,
+        //    EndUserIp: "192.168.0.100",
+        //    TokenId: "ae8d15b7-d06e-4c50-8eca-904e6cc42d1f",                       
+        //    MemberMobileNo: "7405007979",
+        //    MemberMobilePin: "1021"
+        //};
+        
+        var htreq = localStorage.getItem("Htreq");
+        $.ajax({
+            url: '@Url.Action("HotelSearchListView_Lidt", "Hotel")',
+            type: 'POST',
+            dataType: 'Json',
+            data: JSON.stringify(
+                 dataReq
+                ),
+
+            cache: false,
+            success: onsuccessHotelSearchResult,
+            contentType: "application/Json; charset=utf-8",
+            error: function (xhr, error) {
+                console.debug(xhr); console.debug(error);
+            },
+
+        });
+    }
+    function onsuccessHotelSearchResult(data) {
+        alert(data);
+    }
+</script>

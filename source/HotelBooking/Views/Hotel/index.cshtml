@@ -502,16 +502,16 @@ function isFloat(n) {
     function GetHotelSearchResult() {
         debugger;
         var textVALUE = "";
-        for (i = 0; i < parseInt($('#Adult').text()) ; i++) {
-            textVALUE = textVALUE + "{NoOfAdults: 1,NoOfChild: 1,ChildAge: [5]}";
-        }
+        //for (i = 0; i < parseInt($('#Adult').text()) ; i++) {
+        //    textVALUE = textVALUE + "{NoOfAdults: 1,NoOfChild: 1,ChildAge: [5]}";
+        //}
         var dataReq = {
-            "BookingMode": 1,
-            "CheckInDate": "10/09/2016",
+            "BookingMode": 5,
+            "CheckInDate": "20/09/2016",
             "NoOfNights": 3,
             "CountryCode": "US",
             "CityId": "1012",
-            "PreferredCurrency": "USD",
+            "PreferredCurrency": "INR",
             "GuestNationality": "American",
             "NoOfRooms": 1,
             "MaxRating": 5,
@@ -530,7 +530,12 @@ function isFloat(n) {
             "MemberMobileNo": "7405007979",
             "MemberMobilePin": "1021"
         }
-
+       
+        localStorage.setItem("Htreq", dataReq);
+        //@Html.ActionLink("Search", "HotelSearchListView", "Hotel")
+        $.get('http://localhost:51724/Hotel/HotelSearchListView');
+        //window.location.assign("http://localhost:51724/Hotel/HotelSearchListView");
+    }
         //var dataReq = {
         //    BookingMode: 1,
         //    CheckInDate: $('#CheckInDate').val(),
@@ -551,7 +556,7 @@ function isFloat(n) {
         //    MemberMobileNo: "7405007979",
         //    MemberMobilePin: "1021"
         //};
-        $.ajax({
+        @*$.ajax({
             url: '@Url.Action("HotelSearchListView", "Hotel")',
             type: 'POST',
             dataType: 'Json',
@@ -573,5 +578,6 @@ function isFloat(n) {
     }
     function onsuccessHotelSearchResult(data) {
         alert(data);
-    }
+    }*@
+    
 </script>

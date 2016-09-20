@@ -138,43 +138,76 @@ namespace HotelBooking.Models
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class Price
     {
+        [JsonProperty(PropertyName = "CurrencyCode")]
         public string CurrencyCode { get; set; }
-        public double RoomPrice { get; set; }
-        public int Tax { get; set; }
-        public int ExtraGuestCharge { get; set; }
-        public int ChildCharge { get; set; }
-        public int OtherCharges { get; set; }
-        public int Discount { get; set; }
-        public double PublishedPrice { get; set; }
-        public double PublishedPriceRoundedOff { get; set; }
-        public double OfferedPrice { get; set; }
-        public double OfferedPriceRoundedOff { get; set; }
-        public int AgentCommission { get; set; }
+        [JsonProperty(PropertyName = "RoomPrice")]
+        public decimal RoomPrice { get; set; }
+        [JsonProperty(PropertyName = "Tax")]
+        public decimal Tax { get; set; }
+        [JsonProperty(PropertyName = "ExtraGuestCharge")]
+        public decimal ExtraGuestCharge { get; set; }
+        [JsonProperty(PropertyName = "ChildCharge")]
+        public decimal ChildCharge { get; set; }
+        [JsonProperty(PropertyName = "OtherCharges")]
+        public decimal OtherCharges { get; set; }
+        [JsonProperty(PropertyName = "Discount")]
+        public decimal Discount { get; set; }
+        [JsonProperty(PropertyName = "PublishedPrice")]
+        public decimal PublishedPrice { get; set; }
+        [JsonProperty(PropertyName = "PublishedPriceRoundedOff")]
+        public decimal PublishedPriceRoundedOff { get; set; }
+        [JsonProperty(PropertyName = "OfferedPrice")]
+        public decimal OfferedPrice { get; set; }
+        [JsonProperty(PropertyName = "OfferedPriceRoundedOff")]
+        public decimal OfferedPriceRoundedOff { get; set; }
+        [JsonProperty(PropertyName = "AgentCommission")]
+        public decimal AgentCommission { get; set; }
+        [JsonProperty(PropertyName = "StarRating")]
         public int AgentMarkUp { get; set; }
-        public int ServiceTax { get; set; }
-        public int TDS { get; set; }
+        [JsonProperty(PropertyName = "ServiceTax")]
+        public decimal ServiceTax { get; set; }
+        [JsonProperty(PropertyName = "TDS")]
+        public decimal TDS { get; set; }
     }
 
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class HotelResult
     {
+        [JsonProperty(PropertyName = "ResultIndex")]
         public int ResultIndex { get; set; }
+        [JsonProperty(PropertyName = "HotelCode")]
         public string HotelCode { get; set; }
+        [JsonProperty(PropertyName = "HotelName")]
         public string HotelName { get; set; }
+        [JsonProperty(PropertyName = "HotelCategory")]
         public string HotelCategory { get; set; }
+        [JsonProperty(PropertyName = "StarRating")]
         public int StarRating { get; set; }
+        [JsonProperty(PropertyName = "HotelDescription")]
         public string HotelDescription { get; set; }
+        [JsonProperty(PropertyName = "HotelPromotion")]
         public string HotelPromotion { get; set; }
+        [JsonProperty(PropertyName = "HotelPolicy")]
         public string HotelPolicy { get; set; }
+        [JsonProperty(PropertyName = "Price")]
         public Price Price { get; set; }
+        [JsonProperty(PropertyName = "HotelPicture")]
         public string HotelPicture { get; set; }
+        [JsonProperty(PropertyName = "HotelAddress")]
         public string HotelAddress { get; set; }
+        [JsonProperty(PropertyName = "HotelContactNo")]
         public string HotelContactNo { get; set; }
+        [JsonProperty(PropertyName = "HotelMap")]
         public object HotelMap { get; set; }
+        [JsonProperty(PropertyName = "Latitude")]
         public string Latitude { get; set; }
+        [JsonProperty(PropertyName = "Longitude")]
         public string Longitude { get; set; }
+        [JsonProperty(PropertyName = "HotelLocation")]
         public object HotelLocation { get; set; }
+        [JsonProperty(PropertyName = "SupplierPrice")]
         public object SupplierPrice { get; set; }
+        [JsonProperty(PropertyName = "TripAdvisor")]
         public object TripAdvisor { get; set; }
     }
 
@@ -193,16 +226,29 @@ namespace HotelBooking.Models
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class HotelSearchResponse
     {
+        [JsonProperty(PropertyName = "ResponseStatus")]
         public int ResponseStatus { get; set; }
+        [JsonProperty(PropertyName = "Error")]
         public Error Error { get; set; }
+
+        [JsonProperty(PropertyName = "TraceId")]
         public string TraceId { get; set; }
+
+        [JsonProperty(PropertyName = "CityId")]
         public string CityId { get; set; }
+        [JsonProperty(PropertyName = "CheckInDate")]
         public string CheckInDate { get; set; }
+        [JsonProperty(PropertyName = "CheckOutDate")]
         public string CheckOutDate { get; set; }
+        [JsonProperty(PropertyName = "PreferredCurrency")]
         public string PreferredCurrency { get; set; }
+        [JsonProperty(PropertyName = "NoOfRooms")]
         public int NoOfRooms { get; set; }
+        [JsonProperty(PropertyName = "RoomGuests")]
         public List<RoomGuest> RoomGuests { get; set; }
+        [JsonProperty(PropertyName = "HotelResults")]
         public List<HotelResult> HotelResults { get; set; }
+        [JsonProperty(PropertyName = "MarkUp")]
         public MarkUp MarkUp { get; set; }
     }
 }
